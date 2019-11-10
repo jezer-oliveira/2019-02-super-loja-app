@@ -3,25 +3,60 @@ import React from 'react';
 export default class ProdutoCadastro  extends React.Component {
     constructor(props) {
         super(props);
-        this.state={
-                nome:"",
-                valor:""
-                };
+        if(this.props.itemEditar) { 
+            this.state=this.props.itemEditar;
+        }  else {
+                this.state={
+                        nome:"",
+                        valor:""
+                        };
+            }
+
     }
 
-    confirmar() {
+    async confirmar() {
         const produto={
             nome:this.state.nome,
             valor:this.state.valor
             };
-        this.props.onCadastrar(produto);
+        let ret;
+        if(this.props.itemEditar) {
+            produto.id=this.props.itemEditar.id;
+            ret= await this.props.onEditar(produto);    
+        }
+        else {
+            ret= await this.props.onCadastrar(produto);
+        }
+        console.log(ret);
+        if(ret) {
+            this.setState({
+                nome:"",
+                valor:""
+            });
+        }
+    }
+    
+    cancelar() {
+        if(this.state.id) {
+            this.props.onCancelar();
+        } else {
+            this.setState({
+                nome:"",
+                valor:""
+            });
+        }
     }
 
     render() { 
         console.log(this.state);
         return <div>
-            <label>id:</label> <br/><br/>
-            <label>Nome:</label><input 
+            {this.state.id?
+                <div>
+                 <label>id:</label>{this.state.id}  <br/><br/>
+                </div>:""
+            }
+            <label>Nome:</label>
+            <input 
                     value={this.state.nome}
                     onChange={
                         (event) =>this.setState({
@@ -36,8 +71,14 @@ export default class ProdutoCadastro  extends React.Component {
                         })
                     }
                  /> <br/><br/>
-            <button onClick={()=>this.confirmar()} >Cadastrar</button>
-            <button style={{marginLeft:"15px"}}>Limpar</button>
+            <button onClick={()=>this.confirmar()} >
+                {this.state.id?"Atualizar":"Cadastrar"}
+                </button>
+            <button 
+                onClick={()=>this.cancelar()}
+            style={{marginLeft:"15px"}}>
+                    {this.state.id?"Cancelar":"Limpar"}
+                </button>
         </div>
     }
 }

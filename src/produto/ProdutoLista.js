@@ -16,10 +16,14 @@ export default class ProdutoLista extends React.Component {
                 </thead>
                 <tbody>{
                     this.props.itens.map(
-                        (item) =><tr>
+                        (item) =><tr key={item.id}>
                             <td>{item.id}</td>
                             <td>{item.nome}</td>
                             <td>{item.valor}</td>
+                            <td>
+                                <button onClick={()=>this.props.onEditar(item)} >Editar</button>
+                                <button onClick={()=>this.props.onExcluir(item.id)}>Excluir</button>
+                            </td>
                         </tr>
                     )
                 }
