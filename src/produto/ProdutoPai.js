@@ -14,6 +14,11 @@ export default class ProdutoPai extends React.Component {
 
     async componentDidMount() {
         this.atualizarLista();
+        const listaGeneros = await axios.get("/api/generos/");
+        this.setState({
+            generos:listaGeneros.data
+        });
+
 
     }
 
@@ -99,6 +104,7 @@ export default class ProdutoPai extends React.Component {
             </div>:""}
 
             <ProdutoCadastro 
+            generos={this.state.generos}
             key={this.state.itemEditar?this.state.itemEditar.id:"novo"}
             itemEditar={this.state.itemEditar}
             onCadastrar={(produto)=>{
