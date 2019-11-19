@@ -2,7 +2,7 @@ import React from 'react';
 import ProdutoCadastro from './ProdutoCadastro';
 import axios from 'axios';
 import ProdutoLista from './ProdutoLista';
-import { rule } from 'postcss';
+import ProdutoFornecedores from './ProdutoFornecedores';
 
 export default class ProdutoPai extends React.Component {
     constructor(props) {
@@ -89,6 +89,11 @@ export default class ProdutoPai extends React.Component {
 
         
     }
+    editarFornecedores(produto) {
+        this.setState({
+            produtoEditarFornecedor:produto
+        });
+    }
 
     render() {
         console.log(this.state);
@@ -97,12 +102,17 @@ export default class ProdutoPai extends React.Component {
             itens={this.state.produtos}
             onExcluir={(id)=>this.excluir(id)}
             onEditar={(item)=>this.editar(item)}
+            onEditarFornecedores={(item)=>this.editarFornecedores(item)}
             
             /> <br/>
             {this.state.erro?<div style={{color:"red"}}>
             {"Erro ao cadastrar:"+this.state.erro.response.data.message}
             </div>:""}
 
+            {this.state.produtoEditarFornecedor?
+            <ProdutoFornecedores
+                key={this.state.produtoEditarFornecedor.id}
+                produto={this.state.produtoEditarFornecedor}  />:
             <ProdutoCadastro 
             generos={this.state.generos}
             key={this.state.itemEditar?this.state.itemEditar.id:"novo"}
@@ -114,7 +124,7 @@ export default class ProdutoPai extends React.Component {
             onEditar={(item)=>this.confirmarEdicao(item)}
             onCancelar={()=>this.setState({itemEditar:null})}
             
-         />
+         />}
         </div>
     }
 }

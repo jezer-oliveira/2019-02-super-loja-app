@@ -23,6 +23,7 @@ export default class ProdutoLista extends React.Component {
                             <td>
                                 <button onClick={()=>this.props.onEditar(item)} >Editar</button>
                                 <button onClick={()=>this.props.onExcluir(item.id)}>Excluir</button>
+                                <button onClick={()=>this.props.onEditarFornecedores(item)} >Fornecedores</button>
                             </td>
                         </tr>
                     )
